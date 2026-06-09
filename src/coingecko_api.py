@@ -1,6 +1,8 @@
 import requests
 import pandas as pd, os,time,json
 
+# FETCH PRICE DATA FROM COINGECKO
+
 def fetch_bitcoin_data():
     base_url="https://api.coingecko.com/api/v3"
     endpoint="/coins/bitcoin/market_chart"
