@@ -1,6 +1,8 @@
 import requests
 import pandas as pd, os,time,json
 
+# FETCH FEAR GREED İNDEX DATA
+
 def fetch_fear_greed_data():
     base_url="https://api.alternative.me"
     endpoint="/fng/"
