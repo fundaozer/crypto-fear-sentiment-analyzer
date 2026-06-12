@@ -28,6 +28,7 @@ def fetch_bitcoin_data():
 
         df = df_price.merge(df_volume, on="date").merge(df_market_cap, on="date")
         df["date"] = pd.to_datetime(df["date"], unit="ms").dt.date
+        df = df.drop_duplicates(subset=["date"], keep="last")
 
         return df 
     
