@@ -71,6 +71,8 @@ def calculate_features(df_merged):
 def calculate_market_stress_index(df):
     scaler=MinMaxScaler()
 
+    df["sentiment_negativity"] = df["sentiment_negativity"].fillna(0)
+
     df["volatility_scaled"] = scaler.fit_transform(df[["volatility"]])
     df["volume_spike_scaled"] = scaler.fit_transform(df[["volume_spike"]])
     
@@ -82,7 +84,6 @@ def calculate_market_stress_index(df):
     if not sent_non_nan.empty:
         df.loc[has_news, "sentiment_negativity_scaled"] = scaler.fit_transform(sent_non_nan)
     
-    # Dynamic Market Stress Index
     # When news is present: Volatility * 0.4 + Volume Spike * 0.3 + Sentiment Negativity * 0.3
     # When news is missing: Volatility * 0.57 + Volume Spike * 0.43 (re-normalized weights)
     df["market_stress_index"] = np.where(
@@ -116,7 +117,7 @@ def calculate_panic_score(df):
         df["price_drop_component_scaled"] * 0.2
     )
 
-    # Panic threshold is set to 0.60 to yield a realistic frequency of panic days (~5-6% of the year)
+    #  if (panic score > 0.60) -> panic day =1 else -> panic day =0
     df["is_panic_day"] = np.where(df["panic_score"] > 0.60, 1, 0)
 
     return df
